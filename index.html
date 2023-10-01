@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Insert RFID IDs in Firebase</title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+</head>
+<body>
+  <input type="text" id="rfidId" placeholder="Enter RFID ID">
+  <button type="button" onclick="insertRFIDId()">Insert</button>
+
+  <script>
+    // Initialize Firebase
+   const firebaseConfig = {
+  // Your Firebase configuration object
+     apiKey: "AIzaSyDM_zHgMRCfP4tWtVB53Eg_NULnwX4SPsI",
+    authDomain: "reid-4aba0.firebaseapp.com",
+    databaseURL: "https://reid-4aba0-default-rtdb.firebaseio.com",
+    projectId: "reid-4aba0",
+    storageBucket: "reid-4aba0.appspot.com",
+    messagingSenderId: "931979571986",
+    appId: "1:931979571986:web:8c1c0659d57788c453f9cb"
+};
+firebase.initializeApp(firebaseConfig);
+var i=0;
+    // Get the Firebase database
+    var database = firebase.database();
+var countRef = firebase.database().ref("ID_Number");
+    // Function to insert an RFID ID into Firebase
+    function insertRFIDId() {
+      var rfidId = document.getElementById("rfidId").value;
+	  if(rfidId){
+				++i;
+      // Create a new reference to the RFID ID node in Firebase
+      var rfidIdRef = database.ref("RFID_IDs/" + i);
+
+      // Set the value of the RFID ID node
+      rfidIdRef.set(rfidId).then(data => {
+        incrementCount();
+		 alert("Upload Success")
+
+      // Clear the RFID ID input field
+        document.getElementById("rfidId").value = "";
+	  
+	  })
+            .catch(err => console.log(err));
+     }else{
+	 alert("Please fill in all fields!");
+	 }
+	}
+	
+	// Function to increment the count in Firebase
+function incrementCount() {
+  countRef.transaction(function (currentCount) {
+    return (currentCount || 0) + 1;
+  });
+}
+  </script>
+</body>
+</html>
